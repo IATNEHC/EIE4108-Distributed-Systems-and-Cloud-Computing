@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Student Marks</title>
+</head>
+
+<body>
+	<script type="text/javascript">
+		function createRequest() {
+			var xmlhttp;
+			if (window.XMLHttpRequest) {
+				xmlhttp = new XMLHttpRequest();
+			} else {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			return xmlhttp;
+		}
+		function addRecord() {
+			var req = createRequest();
+			var id = document.getElementById("ID");
+			var mark = document.getElementById("Mark");
+			var status = document.getElementById("Status");
+			var url = "http://localhost:8080/REST/Database/mark/add/"+id.value+"+"+mark.value;
+			req.onreadystatechange = function() {
+				if ((req.readyState == 4) && (req.status == 200))
+					status.value = req.responseText;
+			}
+			req.open("POST", url, true);
+			req.send();
+		}
+		function getRecord() {
+			var req = createRequest();
+			var id = document.getElementById("ID");
+			var mark = document.getElementById("Mark");
+			var status = document.getElementById("Status");
+			var url = "http://localhost:8080/REST/Database/mark?student="+id.value;
+			req.onreadystatechange = function() {
+				if ((req.readyState == 4) && (req.status == 200)) {
+					mark.value = "";
+					status.value = req.responseText;
+				}
+			}
+			req.open("GET", url, true);
+			req.send();
+		}
+		function updateRecord() {
+			var req = createRequest();
+			var id = document.getElementById("ID");
+			var mark = document.getElementById("Mark");
+			var status = document.getElementById("Status");
+			var url = "http://localhost:8080/REST/Database/mark/update/"+id.value+"+"+mark.value;
+			req.onreadystatechange = function() {
+				if ((req.readyState == 4) && (req.status == 200))
+					status.value = req.responseText;
+			}
+			req.open("POST", url, true);
+			req.send();
+		}
+	</script>
+</body>
+
+<body>
+	<input type="text" id="ID" size="10" value="">
+	<input type="text" id="Mark" size="5" value="">
+	<input type="text" id="Status" size="30" value="">
+	<br />
+
+	<button type="button" onclick="addRecord()">Add Record</button>
+	<button type="button" onclick="getRecord()">Get Record</button>
+	<button type="button" onclick="updateRecord()">Update Record</button>
+
+</body>
+</html>
